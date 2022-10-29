@@ -101,7 +101,7 @@ public class ModInstallingScreen extends Screen {
     }
     @Override
     public boolean shouldCloseOnEsc() {
-        return true;
+        return false;
     }
 
     @Override

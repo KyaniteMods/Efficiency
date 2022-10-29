@@ -3,7 +3,9 @@ package com.angxd.efficiency.gui;
 import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.gui.widget.ModList;
 import com.angxd.efficiency.gui.widget.ModListEntry;
+import com.angxd.efficiency.utils.ClientUtils;
 import com.angxd.rinthify.ModrinthApi;
+import com.angxd.rinthify.data.misc.Version;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.EnvType;
@@ -11,6 +13,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
@@ -62,7 +65,17 @@ public class ModBrowserScreen extends Screen {
         }));
 
         this.installButton = this.addRenderableWidget(new Button(this.width / 2 - 95, this.height - 35, 100, 20, Component.literal("efficiency.install"), (button) -> {
+            if(this.list.getSelected() != null) {
+                Version validVersion = ClientUtils.getValidVersion(api.getEndpoints().PROJECTS.getVersions(this.list.getSelected().modrinthProject.slug));
 
+                this.minecraft.setScreen(new ConfirmScreen((value) -> {
+                    if (value) {
+                        this.minecraft.setScreen(new ModInstallingScreen(this.minecraft, this, this.api, this.list.getSelected().modrinthProject, validVersion));
+                    }else{
+                        this.minecraft.setScreen(this);
+                    }
+                }, Component.translatable("efficiency.installation_prompt"), Component.literal(this.list.getSelected().modrinthProject.title + " : " + validVersion.name)));
+            }
         }));
 
         this.addRenderableWidget(new Button(this.width / 2 + 70, this.height - 35, 150, 20, CommonComponents.GUI_CANCEL, (button) -> {
