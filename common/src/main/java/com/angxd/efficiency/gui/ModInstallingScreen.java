@@ -1,6 +1,7 @@
 package com.angxd.efficiency.gui;
 
 import com.angxd.efficiency.Efficiency;
+import com.angxd.efficiency.platform.PlatformHelper;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.misc.Dependency;
 import com.angxd.rinthify.data.misc.Version;
@@ -8,8 +9,6 @@ import com.angxd.rinthify.data.projects.Project;
 import com.angxd.rinthify.data.projects.SearchHit;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,7 +46,7 @@ public class ModInstallingScreen extends Screen {
             try
             {
                 Thread.sleep(1000);
-                String fileLocation = FabricLoader.getInstance().getGameDir().resolve("mods") + "\\" + this.version.files.get(0).filename;
+                String fileLocation = PlatformHelper.getModsFolder() + "\\" + this.version.files.get(0).filename;
                 Thread.sleep(500);
                 installFromUrl(this.version.files.get(0).url, fileLocation);
                 Thread.sleep(500);
@@ -59,10 +57,10 @@ public class ModInstallingScreen extends Screen {
                     for(Dependency dependency : version.dependencies) {
                         Version version1 = this.api.getEndpoints().VERSIONS.getVersion(dependency.versionId);
                         Project project1 = this.api.getEndpoints().PROJECTS.getProject(version1.project_id);
-                        if(FabricLoader.getInstance().isModLoaded(project1.slug)) {
+                        if(PlatformHelper.isModLoaded(project1.slug)) {
                             this.status = Component.translatable("efficiency.mod_already_installed", project1.title);
                         }else{
-                            String fileLocation2 = FabricLoader.getInstance().getGameDir().resolve("mods") + "\\" + version1.files.get(0).filename;
+                            String fileLocation2 = PlatformHelper.getModsFolder() + "\\" + version1.files.get(0).filename;
                             Thread.sleep(500);
                             installFromUrl(version1.files.get(0).url, fileLocation2);
                             Thread.sleep(500);
@@ -83,6 +81,7 @@ public class ModInstallingScreen extends Screen {
 
                 this.minecraft.setScreen(this.lastScreen);
             }catch (Exception e) {
+                System.out.println(e);
             }
         });
     }

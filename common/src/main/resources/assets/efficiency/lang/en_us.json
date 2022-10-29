@@ -2,7 +2,7 @@
   "efficiency.browse_mods": "Browse Mods",
   "efficiency.mod_browser": "Mod Browser",
 
-  "efficiency.installation_complete": "%s has been successfully installed. Please restart your game to use it.",
+  "efficiency.installation_complete": "The installation process is complete. Please restart your game.",
   "efficiency.mod_installed": "%s has been installed",
   "efficiency.mod_already_installed": "%s is already installed",
   "efficiency.beginning_installation": "Beginning installation process",
@@ -12,7 +12,7 @@
   "efficiency.uninstall": "Uninstall",
 
   "efficiency.more_info": "More info",
-  "efficiency.slug_tooltip": "Mod-Id: %s",
+  "efficiency.slug_tooltip": "Mod ID: %s",
   "efficiency.restart_needed": "This mod is installed but requires a restart to function",
   "efficiency.mod_supports": "This mod supports %s",
 

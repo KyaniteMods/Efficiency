@@ -7,4 +7,5 @@ public class PlatformHelperImpl {
         return FabricLoader.getInstance().isModLoaded(modId);
     }
     public static String getLoader() { return "fabric"; }
+    public static String getModsFolder() { return FabricLoader.getInstance().getGameDir().resolve("mods").toString(); }
 }

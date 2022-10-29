@@ -12,4 +12,9 @@ public class PlatformHelper {
     public static String getLoader() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static String getModsFolder() {
+        throw new AssertionError();
+    }
 }
