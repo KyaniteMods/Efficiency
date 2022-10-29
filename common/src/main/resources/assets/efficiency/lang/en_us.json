@@ -1,0 +1,21 @@
+{
+  "efficiency.browse_mods": "Browse Mods",
+  "efficiency.mod_browser": "Mod Browser",
+
+  "efficiency.installation_complete": "%s has been successfully installed. Please restart your game to use it.",
+  "efficiency.mod_installed": "%s has been installed",
+  "efficiency.mod_already_installed": "%s is already installed",
+  "efficiency.beginning_installation": "Beginning installation process",
+
+  "efficiency.installation_prompt": "Are you sure you want to install this mod?",
+  "efficiency.install": "Install",
+  "efficiency.uninstall": "Uninstall",
+
+  "efficiency.more_info": "More info",
+  "efficiency.slug_tooltip": "Mod-Id: %s",
+  "efficiency.restart_needed": "This mod is installed but requires a restart to function",
+  "efficiency.mod_supports": "This mod supports %s",
+
+  "efficiency.published_date": "Published on %s",
+  "efficiency.minecraft_versions": "Minecraft versions %s"
+}

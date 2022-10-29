@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "efficiency",
+  "version": "${version}",
+  "name": "Efficiency",
+  "description": "Easy-to-use ingame mod browser & installer",
+  "authors": [
+    "angxd"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.angxd.efficiency.fabric.EfficiencyFabric"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.com/invite/GDNRd5yvxa"
+      }
+    }
+  },
+  "mixins": [
+    "efficiency.mixins.json",
+    "efficiency-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "minecraft": ">=1.19.2"
+  }
+}
