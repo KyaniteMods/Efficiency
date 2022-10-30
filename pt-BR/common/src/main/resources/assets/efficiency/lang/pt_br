@@ -1,0 +1,17 @@
+{
+  "efficiency.browse_mods": "Buscar mods",
+  "efficiency.mod_browser": "Buscador de mods",
+  "efficiency.installation_complete": "O mod %s foi instalado com sucesso. Reinicie seu jogo para usá-lo.",
+  "efficiency.mod_installed": "O mod %s foi instalado",
+  "efficiency.mod_already_installed": "O mod %s já está instalado",
+  "efficiency.beginning_installation": "Iniciando instalação",
+  "efficiency.installation_prompt": "Tem certeza de que deseja instalar este mod?",
+  "efficiency.install": "Instalar",
+  "efficiency.uninstall": "Desinstalar",
+  "efficiency.more_info": "Sobre o mod",
+  "efficiency.slug_tooltip": "ID do mod: %s",
+  "efficiency.restart_needed": "Este mod está instalado, mas requer um reinício para funcionar",
+  "efficiency.mod_supports": "Este mod suporta %s",
+  "efficiency.published_date": "Publicado em %s",
+  "efficiency.minecraft_versions": "Versões: %s"
+}
