@@ -1,37 +1,24 @@
-package com.angxd.efficiency.gui;
+package com.angxd.efficiency.gui.old;
 
 import com.angxd.efficiency.Efficiency;
-import com.angxd.efficiency.gui.widget.ModListEntry;
-import com.angxd.efficiency.gui.widget.ModVersionsList;
+import com.angxd.efficiency.gui.old.widget.ModListEntry;
+import com.angxd.efficiency.gui.old.widget.ModVersionsList;
 import com.angxd.efficiency.utils.RenderingUtils;
-import com.angxd.efficiency.Efficiency;
-import com.angxd.rinthify.data.projects.Project;
 import com.angxd.rinthify.data.projects.SearchHit;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.apache.commons.lang3.StringUtils;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @Environment(EnvType.CLIENT)
 public class ModInfoScreen extends Screen {

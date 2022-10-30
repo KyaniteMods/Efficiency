@@ -1,17 +1,12 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
-import com.angxd.efficiency.gui.ModInfoScreen;
+import com.angxd.efficiency.gui.old.ModInfoScreen;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.misc.Version;
 import com.angxd.rinthify.data.projects.SearchHit;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

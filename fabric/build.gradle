@@ -21,6 +21,8 @@ dependencies {
 
     include modImplementation("com.angxd:Rinthify:1.0.7")
 
+    include modImplementation("com.kyanite:crossui-fabric:${crossui_version}")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }

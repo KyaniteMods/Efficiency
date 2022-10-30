@@ -1,15 +1,12 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
-import com.angxd.efficiency.gui.ModBrowserScreen;
+import com.angxd.efficiency.gui.old.ModBrowserScreen;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.misc.Category;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.util.Mth;
 
 import java.util.List;
 

@@ -1,26 +1,20 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
 import com.angxd.efficiency.platform.PlatformHelper;
 import com.angxd.efficiency.utils.ClientUtils;
 import com.angxd.efficiency.utils.RenderingUtils;
 import com.angxd.efficiency.Efficiency;
-import com.angxd.efficiency.gui.ModInfoScreen;
+import com.angxd.efficiency.gui.old.ModInfoScreen;
 import com.angxd.rinthify.data.projects.SearchHit;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.injectables.annotations.PlatformOnly;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +22,6 @@ import net.minecraft.util.FormattedCharSequence;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
@@ -81,7 +74,7 @@ public class ModListEntry extends ObjectSelectionList.Entry<ModListEntry> implem
             RenderSystem.enableBlend();
             GuiComponent.blit(poseStack, k, j, 0.0F, 0.0F, 32, 32, 32, 32);
             RenderSystem.disableBlend();
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
 
         }
 

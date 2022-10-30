@@ -1,7 +1,7 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
 import com.angxd.efficiency.Efficiency;
-import com.angxd.efficiency.gui.ModBrowserScreen;
+import com.angxd.efficiency.gui.old.ModBrowserScreen;
 import com.angxd.efficiency.platform.PlatformHelper;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.projects.SearchHit;

@@ -1,4 +1,4 @@
-package com.angxd.efficiency.gui;
+package com.angxd.efficiency.gui.old;
 
 import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.platform.PlatformHelper;

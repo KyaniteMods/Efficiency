@@ -1,21 +1,14 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
-import com.angxd.efficiency.platform.PlatformHelper;
 import com.angxd.rinthify.data.misc.Category;
-import com.angxd.rinthify.data.projects.SearchHit;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.concurrent.CompletableFuture;
-
-public class ModFilterEntry extends ObjectSelectionList.Entry<ModFilterEntry> implements AutoCloseable{
+public class ModFilterEntry extends ObjectSelectionList.Entry<ModFilterEntry> implements AutoCloseable {
     private final Minecraft minecraft;
     public final Category category;
     public final ModFilterSidebar list;

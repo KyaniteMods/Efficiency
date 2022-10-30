@@ -1,20 +1,16 @@
-package com.angxd.efficiency.gui.widget;
+package com.angxd.efficiency.gui.old.widget;
 
 import com.angxd.efficiency.platform.PlatformHelper;
 import com.angxd.efficiency.utils.RenderingUtils;
 import com.angxd.rinthify.data.misc.Version;
-import com.angxd.rinthify.data.projects.SearchHit;
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
 public class ModVersionEntry extends ObjectSelectionList.Entry<ModVersionEntry> implements AutoCloseable {
     private final Minecraft minecraft;

@@ -1,18 +1,17 @@
-package com.angxd.efficiency.gui;
+package com.angxd.efficiency.gui.old;
 
 import com.angxd.efficiency.Efficiency;
-import com.angxd.efficiency.gui.widget.ModFilterSidebar;
-import com.angxd.efficiency.gui.widget.ModList;
-import com.angxd.efficiency.gui.widget.ModListEntry;
+import com.angxd.efficiency.gui.old.widget.ModFilterSidebar;
+import com.angxd.efficiency.gui.old.widget.ModList;
+import com.angxd.efficiency.gui.old.widget.ModListEntry;
 import com.angxd.efficiency.utils.ClientUtils;
 import com.angxd.rinthify.ModrinthApi;
-import com.angxd.rinthify.data.misc.Category;
 import com.angxd.rinthify.data.misc.Version;
+import com.kyanite.crossui.screen.SpruceScreen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -28,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ModBrowserScreen extends Screen {
+public class ModBrowserScreen extends SpruceScreen {
     protected final Screen lastScreen;
     public EditBox searchBox;
     public ModrinthApi api;
