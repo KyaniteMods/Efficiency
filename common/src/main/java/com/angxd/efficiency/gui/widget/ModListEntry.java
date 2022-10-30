@@ -71,7 +71,7 @@ public class ModListEntry extends ObjectSelectionList.Entry<ModListEntry> implem
             FormattedCharSequence sequence = Component.translatable("efficiency.slug_tooltip", this.modrinthProject.slug).getVisualOrderText();
             this.list.screen.setToolTip(Collections.singletonList(sequence));
         }
-        this.minecraft.font.draw(poseStack, this.modrinthProject.description.substring(0, Math.min(this.modrinthProject.description.length(), 95)) + "...", (float) (k + 32 + 3), (float) (j + 10), 0xD6D5CB);
+        this.minecraft.font.draw(poseStack, this.modrinthProject.description.substring(0, Math.min(this.modrinthProject.description.length(), 75)) + "...", (float) (k + 32 + 3), (float) (j + 10), 0xD6D5CB);
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, this.iconId);

@@ -13,8 +13,8 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.system.Platform;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +27,7 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     public final ModrinthApi api;
     private ArrayList<SearchHit> currentlyDisplayedMods;
     private String filter;
+    private String facets;
     public List<ResourceLocation> TEXTURES = new ArrayList<>();
     public Minecraft minecraft;
     public static final ResourceLocation ICON_MISSING = new ResourceLocation("textures/misc/unknown_server.png");
@@ -37,6 +38,7 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
         this.api = screen.api;
         this.minecraft = minecraft;
         refreshProjects();
+        this.x0 = 150;
     }
 
     @Override
@@ -50,24 +52,50 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
         this.screen.setInstallButtonActive(entry.isValid());
     }
 
+    @Override
+    public int getRowLeft() {
+        return super.getRowLeft() - this.width / 2 + 115;
+    }
+
+    @Override
+    public int getRowWidth() {
+        return super.getRowWidth();
+    }
+
+    @Override
+    public boolean mouseClicked(double d, double e, int i) {
+        if (i == 0 && d < (double)this.getScrollbarPosition() && e >= (double)this.y0 && e <= (double)this.y1) {
+            int j = this.getRowLeft();
+            int k = this.getScrollbarPosition();
+            int l = (int)Math.floor(e - (double)this.y0) - this.headerHeight + (int)this.getScrollAmount() - 4;
+            int m = l / this.itemHeight;
+            if (d >= (double)j && d <= (double)k && m >= 0 && l >= 0 && m < this.getItemCount()) {
+                ModListEntry modListEntry = this.getEntryAtPosition2(d, e);
+                if(modListEntry != null) {
+                    modListEntry.mouseClicked(d, e, i);
+                }
+            }
+        }
+        return false;
+    }
+
+    public ModListEntry getEntryAtPosition2(double d, double e) {
+        int i = this.getRowWidth() + 180;
+        int j = this.x0 + this.width / 2;
+        int k = j - i;
+        int l = j + i;
+        int i1 = Mth.floor(e - (double)this.y0) - this.headerHeight + (int)this.getScrollAmount() - 4;
+        int j1 = i1 / this.itemHeight;
+        return d < (double)this.getScrollbarPosition() && d >= (double)k && d <= (double)l && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
+    }
+
     private int getRowBottom(int i) {
         return this.getRowTop(i) + this.itemHeight;
     }
 
     @Override
     protected void renderList(PoseStack poseStack, int i, int j, float f) {
-        int k = this.getRowLeft() - this.width / 2 + 120;
-        int l = this.getRowWidth();
-        int m = this.itemHeight - 4;
-        int n = this.getItemCount();
-
-        for(int o = 0; o < n; ++o) {
-            int p = this.getRowTop(o);
-            int q = this.getRowBottom(o);
-            if (q >= this.y0 && p <= this.y1) {
-                this.renderItem(poseStack, i, j, f, o, k, p, l, m);
-            }
-        }
+        super.renderList(poseStack, i, j, f);
     }
 
     @Override
@@ -76,22 +104,33 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     }
 
     public void refreshProjects() {
-        this.currentlyDisplayedMods = screen.api.getEndpoints().PROJECTS.searchForProjects(SearchProjectsQuery.create().query(filter).limit(10).get()).hits;
+        SearchProjectsQuery.Builder query = SearchProjectsQuery.create()
+                .query(filter).limit(10);
+        if(this.facets != null)
+            query.facets(this.facets);
+
+        this.currentlyDisplayedMods = screen.api.getEndpoints().PROJECTS.searchForProjects(query.get()).hits;
         fillMods();
     }
-    public void updateFilter(String string) {
-        this.filter = string;
+    public void update() {
+        this.facets = this.screen.sidebar.getQuery();
+        refreshProjects();
+    }
+
+    public void update(String filter) {
+        this.filter = filter;
+        this.facets = this.screen.sidebar.getQuery();
         refreshProjects();
     }
 
     @Override
     protected int getScrollbarPosition() {
-        return this.width - 5;
+        return this.width / 2 + 223;
     }
 
     @Override
     protected void renderSelection(PoseStack poseStack, int i, int j, int k, int l, int m) {
-        int n = this.x0 + (this.width - j) - 1500;
+        int n = this.x0 ;
         int o = this.x0 + (this.width + j) + 1500;
         fill(poseStack, n, i - 2, o, i + k + 2, l);
         fill(poseStack, n + 1, i - 1, o - 1, i + k + 1, m);

@@ -1,5 +1,5 @@
 dependencies {
-    modImplementation "com.angxd:Rinthify:1.0.6"
+    modImplementation "com.angxd:Rinthify:1.0.7"
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 }
 
