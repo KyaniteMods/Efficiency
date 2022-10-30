@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,7 @@ import net.minecraft.util.FormattedCharSequence;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
@@ -73,11 +75,15 @@ public class ModListEntry extends ObjectSelectionList.Entry<ModListEntry> implem
         }
         this.minecraft.font.draw(poseStack, this.modrinthProject.description.substring(0, Math.min(this.modrinthProject.description.length(), 75)) + "...", (float) (k + 32 + 3), (float) (j + 10), 0xD6D5CB);
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, this.iconId);
-        RenderSystem.enableBlend();
-        GuiComponent.blit(poseStack, k, j, 0.0F, 0.0F, 32, 32, 32, 32);
-        RenderSystem.disableBlend();
+        try {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderTexture(0, this.iconId);
+            RenderSystem.enableBlend();
+            GuiComponent.blit(poseStack, k, j, 0.0F, 0.0F, 32, 32, 32, 32);
+            RenderSystem.disableBlend();
+        }catch (NullPointerException e) {
+
+        }
 
         if(!this.modrinthProject.categories.isEmpty()) {
             int startX = k + minecraft.font.width(this.modrinthProject.title) + 40;
@@ -115,7 +121,6 @@ public class ModListEntry extends ObjectSelectionList.Entry<ModListEntry> implem
             }
         }
     }
-
     public void moreInfo() {
         this.minecraft.setScreen(new ModInfoScreen(this.list.screen, this));
     }

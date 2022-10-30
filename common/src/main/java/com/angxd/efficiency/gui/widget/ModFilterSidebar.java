@@ -3,10 +3,12 @@ package com.angxd.efficiency.gui.widget;
 import com.angxd.efficiency.gui.ModBrowserScreen;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.misc.Category;
+import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.util.Mth;
 
 import java.util.List;
@@ -85,8 +87,12 @@ public class ModFilterSidebar extends ObjectSelectionList<ModFilterEntry> {
     }
 
     public void refresh() {
-        this.currentlyDisplayedCategories = screen.api.getEndpoints().TAGS.getCategories().stream().filter((category -> category.project_type.equals("mod"))).toList();
-        fillCategories();
+        try {
+            this.currentlyDisplayedCategories = screen.api.getEndpoints().TAGS.getCategories().stream().filter((category -> category.project_type.equals("mod"))).toList();
+            fillCategories();
+        }catch (JsonSyntaxException e) {
+            this.minecraft.setScreen(new ModBrowserScreen(this.screen));
+        }
     }
 
     @Override

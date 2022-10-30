@@ -58,11 +58,6 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     }
 
     @Override
-    public int getRowWidth() {
-        return super.getRowWidth();
-    }
-
-    @Override
     public boolean mouseClicked(double d, double e, int i) {
         if (i == 0 && d < (double)this.getScrollbarPosition() && e >= (double)this.y0 && e <= (double)this.y1) {
             int j = this.getRowLeft();
@@ -89,9 +84,6 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
         return d < (double)this.getScrollbarPosition() && d >= (double)k && d <= (double)l && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
     }
 
-    private int getRowBottom(int i) {
-        return this.getRowTop(i) + this.itemHeight;
-    }
 
     @Override
     protected void renderList(PoseStack poseStack, int i, int j, float f) {
@@ -105,7 +97,7 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
 
     public void refreshProjects() {
         SearchProjectsQuery.Builder query = SearchProjectsQuery.create()
-                .query(filter).limit(10);
+                .query(filter).limit(25);
         if(this.facets != null)
             query.facets(this.facets);
 
@@ -118,14 +110,19 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     }
 
     public void update(String filter) {
-        this.filter = filter;
+        this.filter = filter.replaceAll("[\\\\/:*?\"<>#|]", "");;
         this.facets = this.screen.sidebar.getQuery();
         refreshProjects();
     }
 
     @Override
     protected int getScrollbarPosition() {
-        return this.width / 2 + 223;
+        return this.minecraft.screen.width - 7;
+    }
+
+    @Override
+    public int getRowRight() {
+        return super.getRowRight() + 290;
     }
 
     @Override
@@ -165,6 +162,7 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
             }
         });
     }
+
     private void fillMods() {
         this.clearEntries();
         if (currentlyDisplayedMods == null) return;
