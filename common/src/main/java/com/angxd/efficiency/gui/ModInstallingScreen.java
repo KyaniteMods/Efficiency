@@ -2,7 +2,7 @@ package com.angxd.efficiency.gui;
 
 import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.platform.PlatformHelper;
-import com.angxd.rinthify.ModrinthApi;
+import com.angxd.efficiency.utils.ConnectionManager;
 import com.angxd.rinthify.data.misc.Dependency;
 import com.angxd.rinthify.data.misc.Version;
 import com.angxd.rinthify.data.projects.Project;
@@ -26,21 +26,19 @@ public class ModInstallingScreen extends Screen {
     private final SearchHit project;
     private final Version version;
     private final Minecraft minecraft;
-    private final ModrinthApi api;
     private Component status;
 
-    protected ModInstallingScreen(Minecraft minecraft, Screen lastScreen, ModrinthApi api, SearchHit project, Version version) {
+    protected ModInstallingScreen(Minecraft minecraft, Screen lastScreen, SearchHit project, Version version) {
         super(Component.literal("Installation"));
         this.lastScreen = lastScreen;
         this.project = project;
         this.version = version;
         this.minecraft = minecraft;
-        this.api = api;
         installBaseFile();
     }
 
     public void installBaseFile() {
-        CompletableFuture completableFuture = CompletableFuture.runAsync(() -> {
+         CompletableFuture.runAsync(() -> {
             this.status = Component.translatable("efficiency.beginning_installation");
 
             try
@@ -55,8 +53,8 @@ public class ModInstallingScreen extends Screen {
                 if(version.dependencies.stream().count() > 0) {
                     Thread.sleep(500);
                     for(Dependency dependency : version.dependencies) {
-                        Version version1 = this.api.getEndpoints().VERSIONS.getVersion(dependency.versionId);
-                        Project project1 = this.api.getEndpoints().PROJECTS.getProject(version1.project_id);
+                        Version version1 = Efficiency.CONNECTION_MANAGER.API.getEndpoints().VERSIONS.getVersion(dependency.versionId);
+                        Project project1 = Efficiency.CONNECTION_MANAGER.API.getEndpoints().PROJECTS.getProject(version1.project_id);
                         if(PlatformHelper.isModLoaded(project1.slug)) {
                             this.status = Component.translatable("efficiency.mod_already_installed", project1.title);
                         }else{

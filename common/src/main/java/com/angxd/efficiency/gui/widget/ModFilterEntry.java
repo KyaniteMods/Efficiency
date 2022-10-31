@@ -48,11 +48,9 @@ public class ModFilterEntry extends ObjectSelectionList.Entry<ModFilterEntry> im
     @Override
     public void render(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f) {
         if(this.wasSelected != this.checkbox.selected()) {
-            System.out.println("CHECKBOX TOGGLED");
             this.wasSelected = this.checkbox.selected();
             this.list.screen.list.update();
         }
-       // this.minecraft.font.draw(poseStack, StringUtils.capitalize(this.category.name), (float) (k + 32 + 3), (float) (j + 1), 16777215);
 
         this.checkbox.y = j;
         this.checkbox.render(poseStack, i, j, f);

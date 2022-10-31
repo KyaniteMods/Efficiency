@@ -4,34 +4,21 @@ import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.gui.widget.ModListEntry;
 import com.angxd.efficiency.gui.widget.ModVersionsList;
 import com.angxd.efficiency.utils.RenderingUtils;
-import com.angxd.efficiency.Efficiency;
-import com.angxd.rinthify.data.projects.Project;
 import com.angxd.rinthify.data.projects.SearchHit;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.apache.commons.lang3.StringUtils;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @Environment(EnvType.CLIENT)
 public class ModInfoScreen extends Screen {
@@ -56,7 +43,7 @@ public class ModInfoScreen extends Screen {
 
     @Override
     protected void init() {
-        this.versionsList = new ModVersionsList(this, this.project, this.minecraft, this.entry.list.api, this.width, this.height, 90, this.height - 64, 36);
+        this.versionsList = new ModVersionsList(this, this.project, this.minecraft, this.width, this.height, 90, this.height - 64, 36);
         this.addWidget(this.versionsList);
 
         this.addRenderableWidget(new Button(this.width / 2 + 100, this.height - 35, 150, 20, CommonComponents.GUI_CANCEL, (button) -> {
@@ -67,7 +54,7 @@ public class ModInfoScreen extends Screen {
             if(this.versionsList.getSelected() != null) {
                 this.minecraft.setScreen(new ConfirmScreen((value) -> {
                     if (value) {
-                        this.minecraft.setScreen(new ModInstallingScreen(this.minecraft, this, this.versionsList.api, this.project, this.versionsList.getSelected().version));
+                        this.minecraft.setScreen(new ModInstallingScreen(this.minecraft, this, this.project, this.versionsList.getSelected().version));
                     }else{
                         this.minecraft.setScreen(this);
                     }

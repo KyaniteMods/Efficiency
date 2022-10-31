@@ -3,7 +3,7 @@ package com.angxd.efficiency.gui.widget;
 import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.gui.ModBrowserScreen;
 import com.angxd.efficiency.platform.PlatformHelper;
-import com.angxd.rinthify.ModrinthApi;
+import com.angxd.efficiency.utils.ConnectionManager;
 import com.angxd.rinthify.data.projects.SearchHit;
 import com.angxd.rinthify.util.query.SearchProjectsQuery;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -24,7 +24,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModList extends ObjectSelectionList<ModListEntry>  {
     public final ModBrowserScreen screen;
-    public final ModrinthApi api;
     private ArrayList<SearchHit> currentlyDisplayedMods;
     private String filter;
     private String facets;
@@ -35,10 +34,9 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     public ModList(ModBrowserScreen screen, Minecraft minecraft, int i, int j, int k, int l, int m) {
         super(minecraft, i, j, k, l, m);
         this.screen = screen;
-        this.api = screen.api;
         this.minecraft = minecraft;
-        refreshProjects();
         this.x0 = 150;
+        refreshProjects();
     }
 
     @Override
@@ -96,13 +94,15 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     }
 
     public void refreshProjects() {
-        SearchProjectsQuery.Builder query = SearchProjectsQuery.create()
-                .query(filter).limit(25);
-        if(this.facets != null)
-            query.facets(this.facets);
+        this.minecraft.doRunTask(() -> {
+            SearchProjectsQuery.Builder query = SearchProjectsQuery.create()
+                    .query(filter).limit(50);
+            if(this.facets != null)
+                query.facets(this.facets);
 
-        this.currentlyDisplayedMods = screen.api.getEndpoints().PROJECTS.searchForProjects(query.get()).hits;
-        fillMods();
+            this.currentlyDisplayedMods = Efficiency.CONNECTION_MANAGER.API.getEndpoints().PROJECTS.searchForProjects(query.get()).hits;
+            fillMods();
+        });
     }
     public void update() {
         this.facets = this.screen.sidebar.getQuery();
@@ -110,7 +110,8 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     }
 
     public void update(String filter) {
-        this.filter = filter.replaceAll("[\\\\/:*?\"<>#|]", "");;
+        this.filter = filter.replaceAll("[\\\\/:*?\"<>#| ]", "").toLowerCase();
+        Efficiency.LOGGER.info(this.filter);
         this.facets = this.screen.sidebar.getQuery();
         refreshProjects();
     }
@@ -136,29 +137,27 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
     public void registerIcon(SearchHit searchHit, ModListEntry entry) {
         CompletableFuture.runAsync(() -> {
             if (!this.TEXTURES.contains(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug))) {
-                if(!searchHit.icon_url.endsWith(".png") || searchHit.icon_url == null) {
-                    entry.iconId = ModList.ICON_MISSING;
-                    return;
-                }
-                this.TEXTURES.add(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug));
-                NativeImage icon = null;
                 try {
+                    if(!searchHit.icon_url.endsWith(".png") || searchHit.icon_url == null) {
+                        entry.iconId = ModList.ICON_MISSING;
+                        return;
+                    }
+                    NativeImage icon = null;
                     icon = NativeImage.read(new URL(searchHit.icon_url).openStream());
                     entry.nativeImage = icon;
-                } catch (IOException e) {
-                    entry.iconId = ModList.ICON_MISSING;
-                    return;
-                } catch (NullPointerException e) {
-                    entry.iconId = ModList.ICON_MISSING;
-                    return;
+                    DynamicTexture dynamicTexture = new DynamicTexture(icon);
+                    if (dynamicTexture != null && icon != null) {
+                        minecraft.getTextureManager().register(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug), dynamicTexture);
+                        entry.iconId = new ResourceLocation(Efficiency.MOD_ID, searchHit.slug);
+                        this.TEXTURES.add(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug));
+                    }else{
+                        entry.iconId = ModList.ICON_MISSING;
+                    }
+                }catch (Exception e) {
+                    Efficiency.LOGGER.info("Error while loading icon for " + entry.modrinthProject.slug);
                 }
-                DynamicTexture dynamicTexture = new DynamicTexture(icon);
-                if (dynamicTexture != null && icon != null) {
-                    minecraft.getTextureManager().register(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug), dynamicTexture);
-                    entry.iconId = new ResourceLocation(Efficiency.MOD_ID, searchHit.slug);
-                }else{
-                    entry.iconId = ModList.ICON_MISSING;
-                }
+            }else{
+                entry.iconId = new ResourceLocation(Efficiency.MOD_ID, searchHit.slug);
             }
         });
     }
@@ -170,10 +169,6 @@ public class ModList extends ObjectSelectionList<ModListEntry>  {
         for (SearchHit searchHit : currentlyDisplayedMods) {
             ModListEntry entry = new ModListEntry(this, searchHit);
             this.addEntry(entry);
-
-            if(!this.TEXTURES.contains(new ResourceLocation(Efficiency.MOD_ID, searchHit.slug)))
-                entry.iconId = ModList.ICON_MISSING;
-            else entry.iconId = new ResourceLocation(Efficiency.MOD_ID, searchHit.slug);
 
             registerIcon(searchHit, entry);
         }

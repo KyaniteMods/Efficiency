@@ -1,6 +1,8 @@
 package com.angxd.efficiency.mixin;
 
+import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.gui.ModBrowserScreen;
+import com.angxd.efficiency.utils.ConnectionManager;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -19,6 +21,8 @@ public class TitleScreenMixin extends Screen {
     @Inject(method = "init", at = @At("TAIL"), cancellable = true)
     public void addButton(CallbackInfo ci) {
         //  if(FabricLoader.getInstance().isModLoaded("modmenu")) return; TO-DO: ModMenu integration
+        if(!ConnectionManager.isConnected()) return;
+
         int l =  this.height / 4 + 48;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, l + 72 + 35, 200, 20, Component.translatable("efficiency.browse_mods"), (button) -> {

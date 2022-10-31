@@ -1,5 +1,6 @@
 package com.angxd.efficiency.gui.widget;
 
+import com.angxd.efficiency.Efficiency;
 import com.angxd.efficiency.gui.ModInfoScreen;
 import com.angxd.rinthify.ModrinthApi;
 import com.angxd.rinthify.data.misc.Version;
@@ -18,13 +19,11 @@ import java.util.List;
 
 public class ModVersionsList extends ObjectSelectionList<ModVersionEntry> {
     public final Minecraft minecraft;
-    public final ModrinthApi api;
     private List<Version> currentlyDisplayedVersions;
     private SearchHit searchHit;
     private final ModInfoScreen screen;
-    public ModVersionsList(ModInfoScreen screen, SearchHit hit, Minecraft minecraft, ModrinthApi api, int i, int j, int k, int l, int m) {
+    public ModVersionsList(ModInfoScreen screen, SearchHit hit, Minecraft minecraft, int i, int j, int k, int l, int m) {
         super(minecraft, i, j, k, l, m);
-        this.api = api;
         this.searchHit = hit;
         this.minecraft = minecraft;
         this.screen = screen;
@@ -43,7 +42,7 @@ public class ModVersionsList extends ObjectSelectionList<ModVersionEntry> {
     private ModVersionEntry hovered;
 
     public void refreshProjects() {
-        this.currentlyDisplayedVersions = api.getEndpoints().PROJECTS.getVersions(this.searchHit.slug);
+        this.currentlyDisplayedVersions = Efficiency.CONNECTION_MANAGER.API.getEndpoints().PROJECTS.getVersions(this.searchHit.slug);
         fillMods();
     }
 

@@ -5,14 +5,12 @@ import com.angxd.efficiency.gui.widget.ModFilterSidebar;
 import com.angxd.efficiency.gui.widget.ModList;
 import com.angxd.efficiency.gui.widget.ModListEntry;
 import com.angxd.efficiency.utils.ClientUtils;
-import com.angxd.rinthify.ModrinthApi;
-import com.angxd.rinthify.data.misc.Category;
+import com.angxd.efficiency.utils.ConnectionManager;
 import com.angxd.rinthify.data.misc.Version;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -31,7 +29,6 @@ import java.util.List;
 public class ModBrowserScreen extends Screen {
     protected final Screen lastScreen;
     public EditBox searchBox;
-    public ModrinthApi api;
     public ModList list;
     public ModFilterSidebar sidebar;
     @Nullable
@@ -42,8 +39,6 @@ public class ModBrowserScreen extends Screen {
     public ModBrowserScreen(Screen screen) {
         super(Component.translatable("efficiency.mod_browser"));
         this.lastScreen = screen;
-        this.api = ModrinthApi.builder()
-                .build();
     }
 
     @Override
@@ -62,27 +57,28 @@ public class ModBrowserScreen extends Screen {
     @Override
     protected void init() {
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-        this.searchBox = new EditBox(this.font, this.minecraft.screen.width - 230, 15, 200, 20, this.searchBox, Component.translatable("selectWorld.search"));
-        this.searchBox.setResponder((string) -> {
-            this.list.update(string);
-        });
 
+        this.searchBox = new EditBox(this.font, this.minecraft.screen.width - 230, 15, 200, 20, this.searchBox, Component.translatable("selectWorld.search"));
+        this.list = new ModList(this, this.minecraft, this.width / 2 + 500, this.height, 48, this.height - 64, 36);
+        this.sidebar = new ModFilterSidebar(this, this.minecraft, 130, this.height, 48, this.height - 15, 25);
+
+        this.searchBox.setResponder(this.list::update);
+
+        this.addWidget(this.list);
+        this.addWidget(this.sidebar);
         this.addWidget(this.searchBox);
 
         this.infoButton = this.addRenderableWidget(new Button(150, this.height - 35, 100, 20, Component.translatable("efficiency.more_info"), (button) -> {
             if(this.list.getSelected() != null) this.list.getSelected().moreInfo();
         }));
+        this.infoButton.active = false;
 
         this.installButton = this.addRenderableWidget(new Button(255, this.height - 35, 100, 20, Component.translatable("efficiency.install"), (button) -> {
             if(this.list.getSelected() != null) {
-                Version validVersion = ClientUtils.getValidVersion(api.getEndpoints().PROJECTS.getVersions(this.list.getSelected().modrinthProject.slug));
+                Version validVersion = ClientUtils.getValidVersion(Efficiency.CONNECTION_MANAGER.API.getEndpoints().PROJECTS.getVersions(this.list.getSelected().modrinthProject.slug));
 
                 this.minecraft.setScreen(new ConfirmScreen((value) -> {
-                    if (value) {
-                        this.minecraft.setScreen(new ModInstallingScreen(this.minecraft, this, this.api, this.list.getSelected().modrinthProject, validVersion));
-                    }else{
-                        this.minecraft.setScreen(this);
-                    }
+                    this.minecraft.setScreen(value ? new ModInstallingScreen(this.minecraft, this, this.list.getSelected().modrinthProject, validVersion) : this);
                 }, Component.translatable("efficiency.installation_prompt"), Component.literal(this.list.getSelected().modrinthProject.title + " : " + validVersion.name)));
             }
         }));
@@ -91,10 +87,6 @@ public class ModBrowserScreen extends Screen {
             this.minecraft.setScreen(this.lastScreen);
         }));
 
-        this.list = new ModList(this, this.minecraft, this.width / 2 + 500, this.height, 48, this.height - 64, 36);
-        this.sidebar = new ModFilterSidebar(this, this.minecraft, 130, this.height, 48, this.height - 15, 25);
-        this.addWidget(this.list);
-        this.addWidget(this.sidebar);
         this.setInstallButtonActive(false);
         this.setInitialFocus(this.searchBox);
     }
@@ -126,7 +118,6 @@ public class ModBrowserScreen extends Screen {
         drawString(poseStack, this.font, this.title, 30, 10, 16777215);
         poseStack.scale(0.5f, 0.5f, 0.5f);
         drawString(poseStack, this.font, "Showing " + this.list.children().stream().count() + " results", 193, 27, 16777215);
- //       drawCenteredString(poseStack, this.font, this.title, this.width / 2, 8, 16777215);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
