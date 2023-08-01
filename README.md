@@ -1,2 +1,1 @@
-# Efficiency
- Easy-to-use ingame mod browser & installer
+https://github.com/KyaniteMods/EfficiencyV2
